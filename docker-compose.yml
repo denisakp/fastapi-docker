@@ -1,0 +1,22 @@
+version: '3.8'
+
+volumes:
+  myapp:
+    driver: local
+
+services:
+  app:
+    image: myapp
+    ports:
+      - '8000:80' 
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 5m
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+    volumes:
+      - myapp:/opt/myapp/
